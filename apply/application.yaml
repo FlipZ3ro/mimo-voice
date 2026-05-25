@@ -1,0 +1,45 @@
+# Xiaomi MiMo 100T application data — MiMo-Voice project.
+# All submitted content is in ENGLISH.
+
+email: xrapz1767@gmail.com
+
+tools:
+  - Claude Code
+  - Cursor
+  - Cline
+
+models:
+  - Claude 系列
+  - GPT 系列
+  - MiMo 系列
+
+project_description: |
+  MiMo-Voice is an open-source voice agent stack powered by Xiaomi MiMo's
+  TTS family. Repository: github.com/FlipZ3ro/mimo-voice.
+
+  Pain point: open voice-agent tooling is fragmented and rarely supports
+  the full range of TTS capabilities a modern stack needs (stock voices,
+  speaker cloning, prompt-controllable voice design). Most projects pin to
+  a single vendor's TTS. MiMo-Voice is the first open stack that natively
+  treats mimo-v2.5-tts, mimo-v2.5-tts-voiceclone, and mimo-v2.5-tts-voicedesign
+  as a unified API surface, paired with mimo-v2.5-pro reasoning for
+  conversation.
+
+  Core logic flow:
+  (1) STT frontend (bring your own — Whisper / Vosk / external) hands a
+  user utterance to the agent loop.
+  (2) Reasoning: mimo-v2.5-pro runs with persona + memory and returns a
+  short conversational reply optimized for speech.
+  (3) TTS: a unified wrapper selects stock, voice-clone, or voice-design
+  according to the call, hitting the OpenAI-compatible /audio/speech
+  endpoint with base64 reference clips for cloning.
+  (4) CLI: speak / clone / design / agent subcommands; output mp3/wav.
+
+  Token + audio plan: build a 1000-conversation dataset across all three
+  TTS modes for public benchmarking (~150M reasoning tokens + audio
+  generation budget). Goal: become the reference open implementation that
+  other MiMo TTS users start from.
+
+github_or_demo_url: https://github.com/FlipZ3ro/mimo-voice
+
+upload_files: []

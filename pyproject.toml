@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mimo-voice"
+version = "0.1.0"
+description = "Open voice agent stack powered by Xiaomi MiMo TTS"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "MiMo-Voice contributors" }]
+keywords = ["llm", "tts", "voice", "mimo", "xiaomi-mimo", "voice-cloning"]
+dependencies = [
+    "openai>=1.30",
+    "requests>=2.31",
+    "rich>=13.7",
+    "tenacity>=8.2",
+    "python-dotenv>=1.0",
+    "pydantic>=2.6",
+]
+
+[project.scripts]
+mimo-voice = "mimo_voice.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
