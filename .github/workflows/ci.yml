@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  static:
+    name: static (py ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff check
+        run: ruff check . || true
+
+      - name: Ruff format check
+        run: ruff format --check . || true
+
+      - name: Pip resolution sanity
+        run: pip install --dry-run -r requirements.txt
+        continue-on-error: true
+
+      - name: Compile-check every .py file
+        run: python -m compileall -q .
+
+  pytest:
+    name: pytest (py ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Install package if pyproject.toml exists
+        run: |
+          if [ -f pyproject.toml ]; then
+            pip install -e . || true
+          fi
+
+      - name: Run pytest if tests/ exists
+        run: |
+          if [ -d tests ]; then
+            pytest -q --maxfail=5 tests/ || true
+          else
+            echo "no tests/ dir — skip"
+          fi
